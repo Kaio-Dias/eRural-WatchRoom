@@ -1,0 +1,14 @@
+# Ignore bundler config.
+/.bundle
+
+# Ignore all logfiles and tempfiles.
+/log/*
+!/log/.keep
+/tmp
+
+# Ignore node_modules
+/frontend/node_modules
+
+# Ignore database
+/storage
+/tmp/db

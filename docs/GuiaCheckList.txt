@@ -1,0 +1,272 @@
+# From Task to Implementation Checklist: A Comprehensive Guide
+
+This document provides a step-by-step framework for transforming simple task descriptions into detailed implementation guides. By following this process, you can create comprehensive, actionable plans that serve as reliable references for developers implementing complex features.
+
+## Step-by-Step Process
+
+### 1. Analyze the Codebase
+
+Before planning any changes, thoroughly understand the current implementation.
+
+Analyze the current implementation of [feature/component]. Please examine the following files to understand how it works:
+
+- [file1]
+- [file2]
+- Focus particularly on how [specific aspect] is currently handled."
+
+Key Observations:
+
+- Examine related files (handlers, models, services, etc.)
+- Trace data flow through the system
+- Identify dependency relationships
+- Note architectural patterns and conventions: lib/core/docs/architecture/architecture.md
+
+### 2. Extract and Organize Requirements
+
+Clearly identify all explicit and implicit requirements.
+
+Based on the task description and codebase analysis, please list all explicit requirements and any implicit requirements that would be necessary for a correct implementation of the desired feature.
+
+Key Observations:
+
+- Identify requirements stated by the user in the task description prompt
+- Infer unstated but necessary requirements (very carefully and respecting architecture)
+- Group requirements by component or functionality
+
+### 3. Create an Initial Plan Structure
+
+Develop a structured outline of the implementation plan.
+
+Create a detailed outline for an implementation plan that addresses all the requirements. Structure it with clear sections for each component that needs to be modified.
+
+Key Observations:
+
+- Organize by component or logical steps
+- Use a hierarchical structure with main sections and subsections
+- Include file paths for each component
+- Maintain a checklist format for trackability
+- Ensure the plan flows in a logical implementation order
+
+### 4. Add Implementation Details
+
+Enhance the plan with specific code changes and examples.
+
+For each section of the implementation plan, please add specific code changes that would be required, including:
+
+- Imports to add
+- Functions to modify or create
+- Parameters to update
+- Logic changes with code examples
+
+Key Techniques:
+
+- Provide concrete code snippets
+- Include before/after examples for complex changes
+- Specify exact function signatures and parameters
+- Include error handling and edge cases
+- Follow existing code style and patterns
+
+### 5. Add Purpose Explanations
+
+Clarify the rationale behind each set of changes.
+
+For each section of the implementation plan, add a brief explanation of the purpose and benefits of those changes. Explain why they're important and how they fulfill the requirements."
+
+Key Techniques:
+
+- Connect changes to specific requirements
+- Explain the user benefit of each change
+- Describe how changes fit into the overall architecture
+- Highlight any performance or reliability improvements
+- Provide context for why particular approaches were chosen
+
+### 6. Verify Completeness and Accuracy
+
+Thoroughly review the plan to ensure all requirements are addressed.
+
+Please review the implementation plan and verify:
+
+1. All requirements are fully addressed
+2. The approach is technically sound
+3. No edge cases are overlooked
+4. The changes maintain consistency with the existing codebase
+
+Key Techniques:
+
+- Cross-check against the original requirements
+- Verify technical approaches for each component
+- Consider potential side effects or edge cases
+- Check for consistency across the plan
+- Identify any missing steps or dependencies
+
+### 7. Add Summary and Context
+
+Frame the plan with high-level information.
+
+Please add an introduction that summarizes the purpose and benefits of this implementation. Also add a bullet-point list of all key requirements.
+
+Key Techniques:
+
+- Write concise, informative overview paragraphs
+- Create scannable bullet lists of requirements
+- Highlight key architectural decisions
+- Summarize benefits and improvements
+- Set expectations for implementation complexity
+
+## Template Structure
+
+Below is a recommended structure for implementation guides:
+
+markdown
+# [Feature Name] - Implementation Plan
+
+[Overview paragraph explaining the purpose and value of the feature]
+
+[Implementation approach paragraph explaining key technical aspects]
+
+## Key Requirements
+
+* [Requirement 1]
+* [Requirement 2]
+* [Requirement 3]
+* ...
+
+## Architecture Overview
+
+### Component Structure
+
+[Description of components and their relationships]
+
+### Data Flow
+
+[Explanation of how data moves through the system]
+
+## Implementation Checklist
+
+### 1. [Component/Section 1]
+
+*Purpose*: [Explanation of why these changes are necessary]
+
+*File*: [file/path.ext]
+
+- [ ] [Specific change 1]
+- [ ] [Specific change 2]
+- [ ] [Specific change 3]
+
+dart
+// Example code for implementation
+
+
+### 2. [Component/Section 2]
+
+*Purpose*: [Explanation of why these changes are necessary]
+
+*File*: [file/path.ext]
+
+- [ ] [Specific change 1]
+- [ ] [Specific change 2]
+- [ ] [Specific change 3]
+
+dart
+// Example code for implementation
+
+
+## Implementation Details
+
+### [Complex Function 1]
+
+dart
+/// Detailed implementation with comments
+
+
+### [Complex Function 2]
+
+dart
+/// Detailed implementation with comments
+```
+
+## Testing Guidelines
+
+- [ ] [Test scenario 1]
+- [ ] [Test scenario 2]
+- [ ] [Test scenario 3]
+
+## Benefits
+
+1. [Benefit 1]: [Explanation]
+2. [Benefit 2]: [Explanation]
+3. [Benefit 3]: [Explanation]
+
+## Example AI Prompts by Stage
+
+### Initial Analysis Prompts
+
+"Please analyze the current implementation of [feature] focusing on how data flows from the UI to the backend and back."
+
+"I need to understand how [component] currently works before planning changes. Please examine the following files and explain the current implementation."
+
+"Pay special attention to the error handling in the current implementation and how it might be affected by the proposed changes."
+
+### Requirement Extraction Prompts
+
+"Based on my task description and your codebase analysis, please list all requirements that must be fulfilled by this implementation."
+
+"Are there any implicit requirements or best practices we should consider that weren't explicitly mentioned in the task description?"
+
+"Can you identify any potential edge cases or challenges that might arise when implementing these requirements?"
+
+### Planning Prompts
+
+"Create a step-by-step implementation plan organized by component, with specific file paths and changes needed for each step."
+
+"For each major component that needs changes, please structure the plan with: 1) Purpose of changes, 2) Files to modify, 3) Specific code changes, 4) Example implementation."
+
+"Organize the implementation plan in logical order, starting with models/data structures and moving through repositories, services, and finally UI components."
+
+### Implementation Detail Prompts
+
+"For the [specific component], please provide detailed code examples showing how to implement the required changes."
+
+"How should we handle error scenarios in the [specific function]? Please include error handling in the code examples."
+
+"For the data merging functionality, please provide a complete implementation with comments explaining the logic."
+
+### Verification Prompts
+
+"Please double-check the implementation plan against all requirements to ensure nothing has been missed."
+
+"Review the proposed approach for [specific component] and verify it aligns with the existing architecture and patterns."
+
+"Are there any performance considerations or potential bottlenecks in the proposed implementation that should be addressed?"
+
+### Enhancement Prompts
+
+"For each section of the implementation plan, please add a brief explanation of why these changes are necessary and how they benefit the user experience."
+
+"Add two introductory paragraphs that summarize the purpose and approach of this implementation, followed by a bullet-point list of key requirements."
+
+"Enhance the testing section with specific scenarios that should be verified, including edge cases and error conditions."
+
+## Best Practices for Effective Implementation Guides
+
+1. Always start with code analysis - Understanding the current implementation is critical before planning changes
+
+2. Be specific with file paths and function names - Avoid ambiguity about what needs to be changed
+
+3. Include both high-level overviews and low-level details - Different readers need different levels of information
+
+4. Explain the "why" not just the "what" - Context helps developers make better implementation decisions
+
+5. Use a consistent format for each component - Makes the document more scannable and easier to follow
+
+6. Include realistic code examples - Concrete examples are more helpful than abstract descriptions
+
+7. Address error handling and edge cases - Robust implementations handle the unexpected
+
+8. Provide verification criteria - Help developers know when they've successfully implemented the feature
+
+9. Keep the language clear and direct - Avoid ambiguity and unnecessary complexity
+
+10. Follow a logical implementation order - Structure the plan in a way that can be directly followed
+
+By following this guide, you can transform simple task descriptions into comprehensive implementation plans that serve as valuable references for development teams and ensure successful feature implementation.

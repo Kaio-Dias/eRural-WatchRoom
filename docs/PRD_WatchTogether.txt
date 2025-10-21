@@ -1,0 +1,179 @@
+# eRural — WatchTogether (PRD / README-ready)
+
+> Projeto: **WatchTogether** — salas colaborativas para assistir vídeos (inspirado no *Watch2Gether*).  
+> Stack principal: **Ruby on Rails (API)** + **Vue 3 (SPA)**, **PostgreSQL**, **Docker**, deploy para **Heroku**.  
+> Este documento reúne requisitos, arquitetura, UX-flows (baseados nas telas fornecidas), endpoints, modelo de domínio e práticas recomendadas (TDD, SOLID, MVC). Use-o como README principal do repositório — pronto para colocar no `README.md`.
+
+---
+
+# 1 — Visão geral do produto
+
+**Objetivo**  
+Permitir que um usuário crie uma sala para reproduzir um vídeo do YouTube e convidar outras pessoas através de um link para assistir sincronizadamente e conversar via chat ao vivo. O foco é sincronização de reprodução (play/pause/seek), usabilidade simples (nick-only, sem registro obrigatório) e estabilidade para deploy no Heroku.
+
+**Público-alvo**  
+Usuários que querem assistir vídeos juntos em tempo real (amigos, pequenos grupos, professores).
+
+**Inspiração**  
+Watch2Gether — vídeo compartilhado + chat + sincronização de reprodução (pesquisa pública sobre Watch2Gether usada como inspiração).
+
+---
+
+# 2 — Requisitos do produto (alto nível)
+
+### Requisitos funcionais (MVP)
+1. Usuário cria uma nova **sala** informando um **nickname** (página inicial — referência tela1).  
+2. Ao criar a sala, o sistema gera uma **URL única** de sala e exibe num modal flutuante (tela2). Deve ser possível **copiar** o link e **compartilhar**.  
+3. Usuário que abriu a sala informa a URL de um vídeo do **YouTube** (tela3 — campo de input). Após submeter, o vídeo é embutido (iframe) e reproduzido na sala.  
+4. Participantes que entrarem pela URL devem **inserir um nickname** antes de juntarem-se à sala (fluxo de entrada).  
+5. **Sincronização** básica: play/pause/seek do “host” ou do usuário que controla, propaga o evento para os demais participantes com latência mínima.  
+6. **Chat em tempo-real** entre participantes (mensagens públicas da sala).  
+7. Sala deve listar participantes conectados (nickname, status: reproduzindo/paused).  
+8. Persistência mínima: salas e histórico de chat (opcional TTL — por exemplo, limpar após 7 dias).  
+9. APIs documentadas e foco em **TDD** (RSpec/Capybara para backend; Vitest/Jest para frontend).
+
+### Requisitos não-funcionais
+- Arquitetura MVC no servidor; frontend com componentes Vue 3 (composition API).  
+- Código organizado por princípios SOLID; serviços para lógica de sincronização.  
+- Deploy via **Heroku** com Docker (ou Buildpacks), PostgreSQL gerenciado, Procfile e variáveis de ambiente.  
+- Uso de **WebSockets (ActionCable)** para transmitir eventos de reprodução e mensagens.  
+- Docker + docker-compose para desenvolvimento local.  
+- Segurança básica: sanitização de input, rate-limiting, CORS bem definido.  
+- Observabilidade: logs estruturados e health check endpoint.
+
+---
+
+# 3 — Principais user flows (mapeados com as telas fornecidas)
+
+1. **Criar Sala (Tela 1)**  
+   - Usuário abre site → vê campo *Nickname* e botão *Criar Sala*.  
+   - Insere nickname → POST `/rooms` → recebe `room_id`/`room_slug`. Exibe modal (Tela 2) com link: `https://app.example.com/r/{room_slug}`.
+
+2. **Compartilhar Link (Tela 2 — modal)**  
+   - Modal mostra link, botão **Copiar**, e botões de share (navigator.share quando suportado).  
+   - Também botão **Entrar na Sala** abre a sala como criador.
+
+3. **Inserir URL do YouTube (Tela 3)**  
+   - Dentro da sala, existe input para **YouTube URL** (fieldblank). Usuário cole o URL → validação → backend extrai `video_id` → salvo em sala → broadcast para participantes.
+
+4. **Assistir + Chat**  
+   - Quando vídeo setado, iframe do YouTube é embutido. Eventos play/pause/seek são enviados por WebSocket; participantes ajustam player local. Chat aparece ao lado/below, com mensagens em tempo-real.
+
+5. **Entrada via link**  
+   - Usuário clica no link → prompt de nickname (nova tela mínima) → entra na sala e sincroniza reprodução atual.
+
+---
+
+# 4 — Functional decomposition / componentes
+
+## Backend (Rails API)
+- Models: `Room`, `Participant`, `Video`, `Message`.
+- Controllers: `RoomsController`, `VideosController`, `MessagesController`, `ParticipantsController`.
+- Channels: `RoomChannel` (ActionCable).
+- Services: `YouTube::ParserService`, `SyncBroadcastService`.
+- Jobs: (opcional) `CleanupOldRoomsJob`.
+
+## Frontend (Vue 3 SPA)
+- Pages: `HomePage`, `ShareModal`, `RoomPage`.
+- Components: `YouTubeField`, `YouTubePlayer`, `ChatPanel`, `ParticipantsList`, `Controls`
+- State: Pinia store.
+- WebSocket connection via ActionCable JS.
+
+---
+
+# 5 — Modelo de domínio e diagrama de classes
+
+```mermaid
+classDiagram
+  class Room {
+    +UUID id
+    +string slug
+    +string creator_nickname
+    +string current_video_id
+    +datetime created_at
+    +datetime updated_at
+  }
+
+  class Participant {
+    +UUID id
+    +string nickname
+    +bool is_host
+    +datetime joined_at
+  }
+
+  class Message {
+    +UUID id
+    +text content
+    +datetime created_at
+  }
+
+  class Video {
+    +string youtube_id
+    +string title
+  }
+
+  Room "1" --> "*" Participant : has
+  Room "1" --> "*" Message : has
+  Room "1" --> "0..1" Video : current
+  Participant "1" --> "*" Message : author
+```
+
+---
+
+# 6 — API & WebSocket contract
+
+## REST endpoints
+- `POST /rooms` → cria sala.
+- `POST /rooms/:slug/video` → define vídeo do YouTube.
+- `POST /rooms/:slug/messages` → envia mensagem de chat.
+- `GET /rooms/:slug` → retorna estado atual.
+
+## WebSocket (ActionCable)
+- Eventos: `participant_joined`, `chat_message`, `video_set`, `play`, `pause`, `seek`, `sync_state`.
+
+---
+
+# 7 — Sincronização
+- Broadcast `play/pause/seek` com timestamp e posição.
+- Clientes ajustam localmente via IFrame API.
+- Re-sync quando cliente entra ou reconecta.
+
+---
+
+# 8 — Heroku deployment (boas práticas)
+- Usar **Redis** para ActionCable.  
+- Banco: Heroku Postgres.  
+- Dockerfile com Puma server.  
+- Variáveis: `DATABASE_URL`, `REDIS_URL`, `SECRET_KEY_BASE`, `RAILS_ENV`.  
+- Precompile assets durante build.  
+- Configurar SSL, CORS e logs no stdout.  
+- Procfile:
+  ```
+  web: bundle exec puma -C config/puma.rb
+  ```
+- Deploy commands:
+  ```
+  heroku container:push web
+  heroku container:release web
+  heroku run rails db:migrate
+  ```
+
+---
+
+# 9 — TDD, SOLID e Padrões
+- **TDD:** RSpec, Capybara, Vitest.
+- **SOLID:** Services, Repositories, Channels desacoplados.
+- **MVC:** Controllers simples, Models coesos, Views (API ou JSON).
+- **Docker:** Ambientes idênticos.
+- **CI/CD:** Github Actions + Heroku.
+
+---
+
+# 10 — Roadmap
+- MVP (salas + sync + chat)
+- Melhorias: playlist, salas privadas, moderação.
+
+---
+
+# 11 — Conclusão
+Sistema escalável, testável e pronto para deploy no Heroku.

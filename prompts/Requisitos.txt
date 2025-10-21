@@ -1,0 +1,18 @@
+Objetivo
+O objetivo deste desafio é avaliar seus conhecimentos fullstack, sua organização, seu estilo e práticas, além de sua criatividade e priorização.
+
+Descrição
+Fazer um sistema de salas de transmissão de vídeo onde os usuários podem criar uma sala para a transmissão de um vídeo (não necessariamente uma transmissão ao vivo) e outros podem entrar na sala para assistir a este vídeo. Esses são os requisitos básicos, você é livre para construir em cima dessa base acrescentando seus interesses e o que mais julgar importante.
+
+Ao adicionar funcionalidades, prefira acrescentar coisas criativas e interessantes (ie. sincronizar o vídeo entre os usuários) ao invés de funcionalidades mais engessadas (ie. autenticação).
+
+Regras
+O código deve ser disponibilizado em um repositório aberto (preferencialmente no Github);
+A descrição do repositório deve ter instruções para rodar o projeto;
+O link do repositório deve ser enviado por email para robson@erural.net ;
+Sugerimos fortemente o uso de Rails e Vue (caso utilize framework js) na construção do desafio, porém você é livre para fazer com outras tecnologias caso sinta-se mais confortável, contanto que o projeto tenha instruções detalhadas de uso.
+O prazo para entrega é até as 14 horas do dia 20/10, na segunda-feira.
+Considerações
+Não queremos dezenas de funcionalidades adicionais, apenas o que julgar que faz sentido e que caiba no prazo;
+Sugerimos como adicionais relevantes (de média dificuldade) a utilização de Docker e de um framework front-end (como o Vue).
+Sugerimos como adicional relevante de maior dificuldade a entrega da aplicação hospedada em algum lugar (como Heroku).
