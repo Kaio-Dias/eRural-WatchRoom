@@ -27,7 +27,8 @@ RUN apk add --no-cache \
     build-base \
     postgresql-dev \
     tzdata \
-    git
+    git \
+    yaml-dev
 
 WORKDIR /app
 
@@ -46,7 +47,8 @@ FROM ruby:3.4-alpine
 RUN apk add --no-cache \
     postgresql-client \
     tzdata \
-    curl
+    curl \
+    yaml
 
 WORKDIR /app
 
