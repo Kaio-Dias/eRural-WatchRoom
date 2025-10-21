@@ -1,10 +1,7 @@
 # Configuração para deploy Docker no Heroku
 build:
   docker:
-    web: Dockerfile
-  config:
-    NODE_ENV: production
-    RAILS_ENV: production
+    web: Dockerfile.heroku
 
 run:
   web: bundle exec puma -C config/puma.rb
@@ -13,4 +10,3 @@ release:
   image: web
   command:
     - bin/rails db:migrate
-    - bin/rails db:seed
