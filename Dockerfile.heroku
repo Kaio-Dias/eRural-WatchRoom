@@ -1,5 +1,6 @@
 # Dockerfile otimizado para Heroku
 # Multi-stage build para reduzir tamanho da imagem
+# Updated: 2025-10-21 - Fixed npm install with legacy-peer-deps
 
 # ===== Stage 1: Build Frontend =====
 FROM node:18-alpine AS frontend-builder
