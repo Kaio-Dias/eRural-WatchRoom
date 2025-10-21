@@ -35,9 +35,8 @@ WORKDIR /app
 # Copiar Gemfile
 COPY backend/Gemfile backend/Gemfile.lock ./
 
-# Instalar gems
-RUN bundle config set --local deployment 'true' && \
-    bundle config set --local without 'development test' && \
+# Instalar gems (sem deployment mode para compatibilidade com multi-stage)
+RUN bundle config set --local without 'development test' && \
     bundle install --jobs 4 --retry 3
 
 # ===== Stage 3: Runtime =====
