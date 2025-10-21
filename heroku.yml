@@ -6,7 +6,8 @@ build:
 run:
   web: bundle exec puma -C config/puma.rb
   
-release:
-  image: web
-  command:
-    - bin/rails db:migrate
+# Temporariamente desabilitado para debug
+# release:
+#   image: web
+#   command:
+#     - bin/rails db:migrate
