@@ -6,7 +6,9 @@ build:
 run:
   web: bundle exec puma -C config/puma.rb
   
-# Release phase desabilitada - migrations serão rodadas manualmente
+# Release phase desabilitada para deploy mais rápido
+# Rode as migrations manualmente com:
+# heroku run bin/rails db:migrate -a watch-staging
 # release:
 #   image: web
 #   command:

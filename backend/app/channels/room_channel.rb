@@ -9,6 +9,11 @@ class RoomChannel < ApplicationCable::Channel
     reject unless @room
     stream_for(@room)
 
+    # Presença: marca entrada do cliente
+    if connection.respond_to?(:client_id)
+      SyncBroadcastService.join_room(@room, client_id: connection.client_id)
+    end
+
     snapshot = SyncBroadcastService.snapshot_for(@room)
     transmit({ type: 'video:state', payload: snapshot }) if snapshot
 
@@ -17,6 +22,10 @@ class RoomChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
+    # Presença: marca saída do cliente
+    if @room && connection.respond_to?(:client_id)
+      SyncBroadcastService.leave_room(@room, client_id: connection.client_id)
+    end
   end
 
   def video_load(data)

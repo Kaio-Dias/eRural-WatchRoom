@@ -1,5 +1,7 @@
+require 'set'
 class SyncBroadcastService
   @@room_states = {}
+  @@room_presence = {}
 
   def self.store_for_room(room)
     @@room_states[room.id] ||= {
@@ -11,6 +13,10 @@ class SyncBroadcastService
       },
       chat_messages: []
     }
+  end
+
+  def self.presence_for_room(room)
+    @@room_presence[room.id] ||= Set.new
   end
 
   def self.snapshot_for(room)
@@ -61,6 +67,31 @@ class SyncBroadcastService
         })
       end
     end
+  end
+
+  def self.join_room(room, client_id:, nickname: nil)
+    set = presence_for_room(room)
+    unless set.include?(client_id)
+      set << client_id
+      RoomChannel.broadcast_to(room, {
+        type: 'presence:joined',
+        payload: { client_id: client_id, nickname: nickname }
+      })
+    end
+  end
+
+  def self.leave_room(room, client_id:)
+    set = presence_for_room(room)
+    if set.delete?(client_id)
+      RoomChannel.broadcast_to(room, {
+        type: 'presence:left',
+        payload: { client_id: client_id }
+      })
+    end
+  end
+
+  def self.list_presence(room)
+    presence_for_room(room).to_a
   end
 
   def self.extract_emojis(text)
