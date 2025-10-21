@@ -58,11 +58,6 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   config.action_view.annotate_rendered_view_with_filenames = true
-
-  # [AI Generated] Data: 21/10/2025
-  # Descrição: Habilita ActionCable para desenvolvimento.
-  # Gerado por: Cursor AI
-  # AI_GENERATED_CODE_START
   # Allow Action Cable access from local origins
   config.action_cable.disable_request_forgery_protection = true
   config.action_cable.allowed_request_origins = [
@@ -71,7 +66,6 @@ Rails.application.configure do
     /http:\/\/127\.0\.0\.1.*/,
     /https:\/\/127\.0\.0\.1.*/
   ]
-  # AI_GENERATED_CODE_END
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true

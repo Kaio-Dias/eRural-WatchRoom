@@ -28,11 +28,6 @@ module Backend
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
-    
-    # [AI Generated] Data: 21/10/2025
-    # Descrição: Habilita ActionCable mesmo em modo API-only.
-    # Gerado por: Cursor AI
-    # AI_GENERATED_CODE_START
     # Permitir ActionCable em modo API
     config.force_ssl = false if Rails.env.development?
     
@@ -42,6 +37,5 @@ module Backend
     
     # Habilitar ActionCable
     config.action_cable.mount_path = '/cable'
-    # AI_GENERATED_CODE_END
   end
 end

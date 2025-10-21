@@ -327,6 +327,7 @@ export default {
         }
   }
 };
+// AI_GENERATED_CODE_END
 </script>
 
 <style scoped>

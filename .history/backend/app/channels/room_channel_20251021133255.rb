@@ -66,6 +66,7 @@ class RoomChannel < ApplicationCable::Channel
     })
   end
 
+  # Chat
   def chat_message(data)
     guard_room!
     text = data.dig('payload', 'text').to_s.strip

@@ -85,13 +85,22 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 
-  # Static files configuration
+  # [Heroku Configuration] Data: 21/10/2025
+  # Configurações para deploy no Heroku
+  # HEROKU_CONFIG_START
+  
+  # Servir arquivos estáticos
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
   
-  # ActionCable production configuration
+  # ActionCable para produção
   config.action_cable.url = ENV.fetch("ACTION_CABLE_URL") { "wss://#{ENV['HEROKU_APP_NAME']}.herokuapp.com/cable" }
   config.action_cable.allowed_request_origins = [
     ENV.fetch("ACTION_CABLE_FRONTEND_URL") { "https://#{ENV['HEROKU_APP_NAME']}.herokuapp.com" },
     /https:\/\/.*\.herokuapp\.com/
   ]
+  
+  # Desabilitar force_ssl se necessário (Heroku já faz SSL termination)
+  # config.force_ssl = false
+  
+  # HEROKU_CONFIG_END
 end
