@@ -83,7 +83,7 @@ type migrations.sql | docker compose exec -T db psql -U postgres -d backend_deve
 2. **Crie uma sala** com seu apelido
 3. **Cole uma URL do YouTube** e clique em "TROCAR"
 4. **Use os emojis** para reagir durante o vídeo
-5. **Chat** com outros participantes
+5. **Chat**
 
 ## 🛠️ Tecnologias
 
