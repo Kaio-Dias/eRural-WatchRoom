@@ -37,7 +37,7 @@
 ## 🚀 Instalação e Execução
 
 ### **Pré-requisitos**
-- Docker e Docker Compose
+- Docker
 - Node.js 22+ (para desenvolvimento local)
 - Ruby 3.4.7+ (para desenvolvimento local)
 
@@ -55,8 +55,11 @@ cd eRural-WatchRoom
 docker compose --build no-cache
 docker compose up -d
 
-# Migrar banco
-docker compose run --rm web bin/rails db:create db:migrate
+# Aplique as migrações (exec na raiz do projeto)
+- Power Shell:
+Get-Content migrations.sql | docker compose exec -T db psql -U postgres -d backend_development
+- CMD:
+type migrations.sql | docker compose exec -T db psql -U postgres -d backend_development
 ```
 
 4. **Acesse a aplicação**
