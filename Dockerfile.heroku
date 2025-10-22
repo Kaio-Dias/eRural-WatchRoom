@@ -83,6 +83,5 @@ RUN bundle exec rails assets:precompile || true
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD curl -f http://localhost:$PORT/up || exit 1
 
-# Comando de inicialização com entrypoint
-ENTRYPOINT ["./docker-entrypoint.sh"]
+# Comando de inicialização (sem ENTRYPOINT para evitar bloqueio na release phase)
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

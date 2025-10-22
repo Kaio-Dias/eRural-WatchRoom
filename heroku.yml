@@ -9,4 +9,6 @@ run:
 release:
   image: web
   command:
-    - bin/rails db:migrate
+    - bash
+    - -lc
+    - bundle exec rails db:migrate
