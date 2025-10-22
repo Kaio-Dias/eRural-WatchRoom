@@ -47,7 +47,9 @@ RUN apk add --no-cache \
     postgresql-client \
     tzdata \
     curl \
-    yaml
+    yaml \
+    bash \
+    netcat-openbsd
 
 WORKDIR /app
 
@@ -62,7 +64,8 @@ COPY --from=frontend-builder /frontend/dist ./public
 
 # Criar diretórios necessários
 RUN mkdir -p tmp/pids tmp/sockets log && \
-    chmod +x bin/*
+    chmod +x bin/* && \
+    chmod +x docker-entrypoint.sh
 
 # Variáveis de ambiente
 ENV RAILS_ENV=production \
@@ -80,5 +83,6 @@ RUN bundle exec rails assets:precompile || true
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD curl -f http://localhost:$PORT/up || exit 1
 
-# Comando de inicialização
+# Comando de inicialização com entrypoint
+ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]

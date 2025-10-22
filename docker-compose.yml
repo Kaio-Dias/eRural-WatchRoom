@@ -25,8 +25,6 @@ services:
   web:
     build: .
     command: bundle exec puma -C config/puma.rb
-    volumes:
-      - ./backend:/app/backend
     ports:
       - "3000:3000"
     depends_on:

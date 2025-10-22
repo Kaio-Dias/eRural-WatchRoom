@@ -6,8 +6,7 @@ build:
 run:
   web: bundle exec puma -C config/puma.rb
   
-# Release phase desabilitada - migrations serão rodadas manualmente
-# release:
-#   image: web
-#   command:
-#     - bin/rails db:migrate
+release:
+  image: web
+  command:
+    - bin/rails db:migrate
